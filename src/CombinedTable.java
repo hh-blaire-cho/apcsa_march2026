@@ -9,10 +9,13 @@ public class CombinedTable {
   }
 
   public boolean canSeat(int number) {
-    return false;
+    return table1.getNumSeats() + table2.getNumSeats() - 2 >= number;
   }
 
   public double getDesirability() {
-    return 0.0;
+    if (table1.getHeight() == table2.getHeight()) {
+      return (table1.getViewQuality() + table2.getViewQuality()) / 2;
+    }
+    return (table1.getViewQuality() + table2.getViewQuality()) / 2 - 10;
   }
 }
