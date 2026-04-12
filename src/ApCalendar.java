@@ -20,20 +20,21 @@ public class ApCalendar {
   }
 
   public static int dayOfYear(int month, int day, int year) {
-    int ret = 0;
-    int[] arr1 = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    int[] arr2 = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    int[] days = {31, 28, 31, 30, 31, 30,
+      31, 31, 30, 31, 30, 31};
 
-    if (isLeapYear(year)) {
-      for (int i = 1; i < month; i++) {
-        ret += arr2[i];
-      }
-    } else {
-      for (int i = 1; i < month; i++) {
-        ret += arr1[i];
-      }
+    int total = 0;
+
+    for (int i = 0; i < month - 1; i++) {
+      total += days[i];
     }
-    return ret + day;
+
+    // 윤년이면 2월 이후 날짜에 +1
+    if (isLeapYear(year) && month > 2) {
+      total++;
+    }
+
+    return total + day;
   }
 
   public static int firstDayOfYear(int year) {
@@ -49,25 +50,42 @@ public class ApCalendar {
     return day;
   }
 
+  public static int dayOfWeek(int month, int day, int year) {
+    int elapsed = dayOfYear(month, day, year);
+    int firstDayOfYear = firstDayOfYear(year);
+    return (firstDayOfYear + elapsed - 1) % 7;
+  }
+
   public static void main(String[] args) {
     // part a
+    System.out.println("Part A");
     System.out.println(ApCalendar.isLeapYear(2020));
     System.out.println(ApCalendar.isLeapYear(2026));
     System.out.println(ApCalendar.isLeapYear(2028));
     System.out.println(ApCalendar.isLeapYear(2100));
 
     // part b
+    System.out.println("Part B");
     System.out.println(ApCalendar.numberOfLeapYears(2020, 2028)); // should be 3. (2020, 2024, 2028)
     System.out.println(ApCalendar.numberOfLeapYears(2099, 2107)); // should be 1. 2100 does not count. Only 2104 count.
 
     // part c
+    System.out.println("Part C");
     System.out.println(ApCalendar.dayOfYear(1, 1, 2026)); // 1
     System.out.println(ApCalendar.dayOfYear(3, 1, 2017)); // 60
     System.out.println(ApCalendar.dayOfYear(3, 1, 2016)); // 61
 
     // part d
+    System.out.println("Part D");
     System.out.println(ApCalendar.firstDayOfYear(2019)); // 2
     System.out.println(ApCalendar.firstDayOfYear(2026)); // 4
+
+    // part e
+    System.out.println("Part E");
+    System.out.println(ApCalendar.dayOfWeek(1, 5, 2019));  // 2
+    System.out.println(ApCalendar.dayOfWeek(1, 10, 2019)); // 4
+    System.out.println(ApCalendar.dayOfWeek(4, 4, 2026));  // 6
+    System.out.println(ApCalendar.dayOfWeek(4, 5, 2026));  // 0
 
   }
 
